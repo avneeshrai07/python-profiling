@@ -1,0 +1,21 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8005:8005"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  worker:
+    build: .
+    command: ["python", "-m", "app.worker"]
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      - WORKER_ITERATIONS=0
+      - WORKER_SLEEP=0.5
+    depends_on:
+      - api
